@@ -1,0 +1,24 @@
+#ifndef DNACELL_H
+#define DNACELL_H
+
+#include <QVector>
+#include "includes.h"
+#include "lifecell.h"
+
+class LifeCell;
+typedef int (*ActionPointer)(LifeCell*);
+
+class DNACell
+{
+public:
+    DNACell(LifeCell* organism, ActionPointer thisAction, QVector<DNACell> caseActionList);
+    void changeCaseAction(qint16 index, DNACell action);
+    void appendCase(DNACell action);
+    int  run();
+private:
+    LifeCell                *life;
+    QVector<DNACell>        caseActions;
+    ActionPointer           baseAction;
+};
+
+#endif // DNACELL_H
