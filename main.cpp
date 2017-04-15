@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         LifeCell *life = new LifeCell(w.world, methods);
         QVector<Gene> tempVect;
         QVector<Gene> tempVect2;
-        tempVect2.append(Gene(life, third, "thid", QVector<Gene>(0)));
+        tempVect2.append(Gene(life, third, "third", QVector<Gene>(0)));
         tempVect.append(Gene(life, second, "second", tempVect2));
         Gene gene(life, first, "first", tempVect);
 
@@ -40,12 +40,21 @@ int main(int argc, char *argv[])
         dna.append(gene);
         dna.append(Gene(life, second, "second", tempVect2));
         dna.append(Gene(life, third, "third", QVector<Gene>()));
-        QFile f(QDir::currentPath() + "/testsss");
-        f.open(QIODevice::WriteOnly);
-        f.write(dna.toString().toLatin1());
-        f.close();
-        qDebug() << QDir::currentPath();
+
+        QFile f("D:/testsss.ros");
+//        f.open(QIODevice::WriteOnly);
+//        f.write(dna.toString().toLatin1());
+//        f.close();
 //        dna.run();
+
+        f.open(QIODevice::ReadOnly);
+        DNAClass test(life, f.readAll());
+        f.close();
+        qDebug() << test.toString();
+        f.setFileName("D:/test2.ros");
+        f.open(QIODevice::WriteOnly);
+        f.write(test.toString().toLatin1());
+        f.close();
     }
     //////////////////
     //////////////////

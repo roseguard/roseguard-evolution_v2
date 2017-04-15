@@ -21,6 +21,18 @@ ActionPointer MethodLists::getActionAt(quint32 index)
     return list.at(index);
 }
 
+ActionPointer MethodLists::getActionAt(QString name)
+{
+    for(int i = 0; i < names.length(); i++)
+    {
+        if(names.at(i)==name)
+        {
+            return list.at(i);
+        }
+    }
+    return nullptr;
+}
+
 QString MethodLists::getActionNameAt(quint32 index)
 {
     return names.at(index);

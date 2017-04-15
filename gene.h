@@ -21,7 +21,7 @@ public:
     ActionPointer getBaseAction();
     QString getActionName();
     int  run();
-private:
+public:
     LifeCell                *life;
     QVector<Gene>           caseActions;
     ActionPointer           baseAction;

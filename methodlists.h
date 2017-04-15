@@ -16,6 +16,7 @@ public:
     void replace(quint32 index, ActionPointer action, QString actionName);
     quint32 getRandomIndex();
     ActionPointer getActionAt(quint32 index);
+    ActionPointer getActionAt(QString name);
     QString getActionNameAt(quint32 index);
     MethodLists* getMethodList();
 private:

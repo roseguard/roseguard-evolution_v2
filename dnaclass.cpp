@@ -9,6 +9,72 @@ DNAClass::DNAClass(LifeCell *organism)
     qsrand(QTime::currentTime().msec());
 }
 
+DNAClass::DNAClass(LifeCell *organism, QString DNAString)
+{
+    life = organism;
+    qsrand(QTime::currentTime().msec());
+
+    QVector<QString> DNACode = DNAString.split('\n').toVector();
+    for(int i = 0; i < DNACode.length(); i++)
+    {
+        DNACode[i].remove('\n');
+        QString tempCopy = DNACode.at(i);
+        tempCopy.remove('\t');
+        if(tempCopy.isEmpty())
+        {
+            DNACode.removeAt(i);
+            i--;
+        }
+    }
+
+    QVector<quint32> tabsOfCode;
+    for(int i = 0; i < DNACode.length(); i++)
+    {
+        qint16 tabs = 0;
+        while(DNACode.at(i).at(tabs)=='\t')
+            tabs++;
+        tabsOfCode.append(tabs);
+        DNACode[i].remove('\t');
+    }
+    for(quint32 index = 0; index < DNACode.length();)
+    {
+        QVector<Gene> tempGens;
+        Gene testGen(life, life->getMethods()->getActionAt(DNACode.at(index)), DNACode.at(index), QVector<Gene>(0));
+        tempGens = createGeneChain(DNACode, tabsOfCode, index);
+        for(int i = 0; i < tempGens.length(); i++)
+        {
+            testGen.appendCase(tempGens.at(i));
+        }
+        genePool.append(testGen);
+    }
+    qDebug() << "end";
+}
+
+QVector<Gene> DNAClass::createGeneChain(QVector<QString> DNACode, QVector<quint32> tabsLen, quint32 &index)
+{
+    int currentTab = tabsLen.at(index);
+    QVector<Gene> thisLineGens;
+    for(index++;index < DNACode.length();index++)
+    {
+        if(tabsLen.at(index)<=currentTab || tabsLen.at(index)==0)
+        {
+            return thisLineGens;
+        }
+        else
+        {
+            quint32 thisIndex = index;
+            Gene tempGen(life, life->getMethods()->getActionAt(DNACode.at(thisIndex)), DNACode.at(thisIndex), createGeneChain(DNACode, tabsLen, index));
+            qDebug() << "=========";
+            qDebug() << tempGen.actionName;
+            qDebug() << tempGen.getCaseActions().length();
+            qDebug() << index;
+            qDebug() << "=========";
+            thisLineGens.append(tempGen);
+            index--;
+        }
+    }
+}
+
 void DNAClass::append(Gene gene)
 {
     genePool.append(gene);
