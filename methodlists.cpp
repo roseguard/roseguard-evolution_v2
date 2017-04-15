@@ -1,5 +1,4 @@
 #include "methodlists.h"
-#include "QTime"
 
 MethodLists::MethodLists()
 {
@@ -9,6 +8,7 @@ MethodLists::MethodLists()
 void MethodLists::append(ActionPointer action, QString actionName)
 {
     list.append(action);
+    names.append(actionName);
 }
 
 quint32 MethodLists::getRandomIndex()
@@ -16,7 +16,7 @@ quint32 MethodLists::getRandomIndex()
     return qrand()%list.length();
 }
 
-QAction MethodLists::getActionAt(quint32 index)
+ActionPointer MethodLists::getActionAt(quint32 index)
 {
     return list.at(index);
 }

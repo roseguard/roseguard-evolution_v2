@@ -3,18 +3,15 @@
 
 #include "includes.h"
 
-class MethodLists;
-class LifeCell;
-class WorldController;
-
 typedef int (*ActionPointer)(LifeCell*);
 
 class LifeCell : public QGraphicsRectItem
 {
 public:
-    LifeCell(WorldController *worldPointer);
+    LifeCell(WorldController *worldPointer, MethodLists *allMethods);
     qint32 getHealth();
     qint32 getStamina();
+    qint8  getMutationChance();
     qint32 damageHealth(qint32 value);
     qint32 damageStamina(qint32 value);
     WorldController* getWorld();
@@ -27,8 +24,9 @@ private:
 
     qint32                  health;
     qint32                  stamina;
+    qint8                   mutationChance;
     WorldController         *world;
-    MethodLists             *listArea;
+    MethodLists             *wholeMethods;
 
 };
 

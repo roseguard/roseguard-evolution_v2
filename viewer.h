@@ -3,8 +3,6 @@
 
 #include "includes.h"
 
-class WorldController;
-
 class Viewer : public QGraphicsView
 {
     Q_OBJECT

@@ -21,6 +21,12 @@ void Gene::changeCaseAction(qint16 index, Gene action)
     }
 }
 
+void Gene::changeBaseAction(ActionPointer action, QString name)
+{
+    baseAction = action;
+    actionName = name;
+}
+
 void Gene::appendCase(Gene action)
 {
     caseActions.append(action);
@@ -34,4 +40,24 @@ int Gene::run()
         return caseActions[value].run();
     }
     return value;
+}
+
+QVector<Gene*> Gene::getCaseActions()
+{
+    QVector<Gene*> temp;
+    for(int i = 0; i < caseActions.length(); i++)
+    {
+        temp.append(&caseActions[i]);
+    }
+    return temp;
+}
+
+ActionPointer Gene:: getBaseAction()
+{
+    return baseAction;
+}
+
+QString Gene::getActionName()
+{
+    return actionName;
 }

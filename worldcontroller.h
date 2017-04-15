@@ -3,15 +3,13 @@
 
 #include "includes.h"
 
-class LifeCell;
+typedef int (*ActionPointer)(LifeCell*);
 
 class WorldController : public QGraphicsScene
 {
 public:
     WorldController(qreal x, qreal y, qreal width, qreal height, QObject * parent = 0);
     void hit(LifeCell *atacker, qreal side);
-    void sexSomeone(LifeCell *searcher, qreal side);
-    void eatSomethink(LifeCell *eater);
     void addLife(LifeCell *life);
 
 private:

@@ -9,6 +9,13 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QDebug>
+#include <QTime>
+#include <QApplication>
+
+class LifeCell;
+class MethodLists;
+class Gene;
+class WorldController;
 
 #define returnValue -1
 

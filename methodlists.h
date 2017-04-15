@@ -3,8 +3,7 @@
 
 #include "includes.h"
 
-class LifeCell;
-class MethodLists;
+typedef int (*ActionPointer)(LifeCell*);
 
 typedef int (*ActionPointer)(LifeCell*);
 
@@ -16,7 +15,7 @@ public:
     void removeAt(quint32 index);
     void replace(quint32 index, ActionPointer action, QString actionName);
     quint32 getRandomIndex();
-    QAction getActionAt(quint32 index);
+    ActionPointer getActionAt(quint32 index);
     QString getActionNameAt(quint32 index);
     MethodLists* getMethodList();
 private:
