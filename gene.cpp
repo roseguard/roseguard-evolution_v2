@@ -34,10 +34,17 @@ void Gene::appendCase(Gene action)
 
 int Gene::run()
 {
+    qDebug() << "runned " << actionName;
+    qDebug() << life->pos();
     int value = baseAction(life);
-    if(value < caseActions.length() && value >= 0)
+    if(life->getStamina()<=0)
+        life->setFinish();
+    if(!life->isFinished())
     {
-        return caseActions[value].run();
+        if(value < caseActions.length() && value >= 0)
+        {
+            return caseActions[value].run();
+        }
     }
     return value;
 }
@@ -52,7 +59,7 @@ QVector<Gene*> Gene::getCaseActions()
     return temp;
 }
 
-ActionPointer Gene:: getBaseAction()
+ActionPointer Gene::getBaseAction()
 {
     return baseAction;
 }
@@ -60,4 +67,28 @@ ActionPointer Gene:: getBaseAction()
 QString Gene::getActionName()
 {
     return actionName;
+}
+
+int Gene::runGeneAt(int index)
+{
+    if(index >= 0 && index < caseActions.length())
+    {
+        return caseActions[index].run();
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int Gene::runGeneAtModule(int index)
+{
+    if(caseActions.length()>0)
+    {
+        return caseActions[index%caseActions.length()].run();
+    }
+    else
+    {
+        return -1;
+    }
 }

@@ -1,4 +1,5 @@
 #include "methodlists.h"
+#include "functionsfile.h"
 
 MethodLists::MethodLists()
 {
@@ -38,7 +39,7 @@ QString MethodLists::getActionNameAt(quint32 index)
     return names.at(index);
 }
 
-void MethodLists::removeAt(quint32 index)
+void MethodLists::removeAt(qint32 index)
 {
     if(index < list.length())
     {
@@ -47,11 +48,16 @@ void MethodLists::removeAt(quint32 index)
     }
 }
 
-void MethodLists::replace(quint32 index, ActionPointer action, QString actionName)
+void MethodLists::replace(qint32 index, ActionPointer action, QString actionName)
 {
     if(index < list.length())
     {
         list.replace(index, action);
         names.replace(index, actionName);
     }
+}
+
+void MethodLists::initBaseMethods()
+{
+    writeFunctions(this);
 }

@@ -37,7 +37,11 @@ HEADERS  += viewer.h \
     worldcontroller.h \
     includes.h \
     dnaclass.h \
-    gene.h
+    gene.h \
+    functionsfile.h \
+    functions/eat.h \
+    functions/isFood.h \
+    functions/move.h
 
 RESOURCES += \
     resource.qrc

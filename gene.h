@@ -4,10 +4,7 @@
 #include "includes.h"
 #include "lifecell.h"
 
-typedef int (*ActionPointer)(LifeCell*);
-
 class LifeCell;
-typedef int (*ActionPointer)(LifeCell*);
 
 class Gene
 {
@@ -21,6 +18,8 @@ public:
     ActionPointer getBaseAction();
     QString getActionName();
     int  run();
+    int runGeneAt(int index);
+    int runGeneAtModule(int index);
 public:
     LifeCell                *life;
     QVector<Gene>           caseActions;

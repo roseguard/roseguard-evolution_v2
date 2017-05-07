@@ -3,8 +3,6 @@
 
 #include "includes.h"
 
-typedef int (*ActionPointer)(LifeCell*);
-
 class DNAClass
 {
 public:
