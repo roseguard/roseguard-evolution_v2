@@ -1,6 +1,7 @@
 #include "worldcontroller.h"
 #include "lifecell.h"
 #include "methodlists.h"
+#include "dnaclass.h"
 
 WorldController::WorldController(qreal x, qreal y, qreal width, qreal height, QObject * parent, MethodLists *list)
     : QGraphicsScene(x, y, width, height, parent)
@@ -53,8 +54,20 @@ void WorldController::addFood()
     addItem(food);
 }
 
+void WorldController::keyPressEvent(QKeyEvent *event)
+{
+    if(event->text()=="w")
+    {
+        makeStep();
+    }
+}
+
 void WorldController::makeStep()
 {
+    for(int i = 0; i < lifes.length(); i++)
+    {
+        while(!lifes.at(i)->isFinished());
+    }
     for(int i = 0; i < lifes.length(); i++)
     {
         if(i<0)
@@ -68,9 +81,11 @@ void WorldController::makeStep()
         }
         else
         {
+            while(!lifes.at(i)->isFinished());
             lifes[i]->live();
+            if(qrand()%100 > 95)
+                addFood();
         }
     }
-    addFood();
     QTimer::singleShot(1, this, SLOT(makeStep()));
 }

@@ -7,6 +7,8 @@ class LifeCell : public QGraphicsRectItem
 {
 public:
     LifeCell(WorldController *worldPointer, MethodLists *allMethods);
+    LifeCell(WorldController *worldPointer, MethodLists *allMethods, LifeCell *monoparent, qint32 healthValue);
+    LifeCell(WorldController *worldPointer, MethodLists *allMethods, LifeCell *father, LifeCell *mother);
     qint32 getHealth();
     qint32 getStamina();
     qint8  getMutationChance();
@@ -16,6 +18,7 @@ public:
     void   restoreStaminaFromHealth();
     WorldController* getWorld();
     MethodLists*     getMethods();
+    DNAClass*        getDNA();
     bool    isDead();
     void    live();
     int     memory[16];
@@ -39,6 +42,7 @@ private:
     MethodLists             *methods;
     bool                    finished = true;
     bool                    dead = false;
+    QThread                 *thisThread;
 };
 
 #endif // LIFECELL_H

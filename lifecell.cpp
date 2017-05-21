@@ -1,8 +1,9 @@
 #include "lifecell.h"
 #include "worldcontroller.h"
 #include "dnaclass.h"
+#include "methodlists.h"
 
-LifeCell::LifeCell(WorldController *worldPointer, MethodLists *allMethods) : QGraphicsRectItem()
+LifeCell::LifeCell(WorldController *worldPointer, MethodLists *allMethods)
 {
     setBrush(* new QBrush(Qt::red));
 //    setRect(0,0,lifeWidth, lifeHeight);
@@ -11,22 +12,17 @@ LifeCell::LifeCell(WorldController *worldPointer, MethodLists *allMethods) : QGr
     methods = allMethods;
     setData(itemType, lifeItem);
 
-//    QFile file("D:\\dna.ros");
-//    file.open(QIODevice::ReadOnly);
-//    QString code = file.readAll();
+    QFile readCode("D:\\dna.ros");
+    readCode.open(QIODevice::ReadOnly);
+    QString codeHandler = readCode.readAll();
 
-//    DNA = new DNAClass(this, code);
+    DNA = new DNAClass(this, codeHandler);
 
-//    file.close();
-//    file.open(QIODevice::WriteOnly);
-//    file.write(DNA->toString().toLatin1());
-//    file.close();
-
-    DNA = new DNAClass(this);
-    for(int i = 0; i < 1; i++)
-    {
-        DNA->randomMutation();
-    }
+//    DNA = new DNAClass(this);
+//    for(int i = 0; i < 10; i++)
+//    {
+//        DNA->randomMutation();
+//    }
 
     for(int i = 0; i < 16; i++)
         memory[i] = 0;
@@ -36,6 +32,33 @@ LifeCell::LifeCell(WorldController *worldPointer, MethodLists *allMethods) : QGr
     healthView = new QGraphicsTextItem(QString::number(health), this);
     staminaView = new QGraphicsTextItem(QString::number(stamina), this);
     staminaView->moveBy(0, 30);
+
+}
+
+LifeCell::LifeCell(WorldController *worldPointer, MethodLists *allMethods, LifeCell *monoparent, qint32 healthValue) : QGraphicsRectItem()
+{
+    setBrush(* new QBrush(Qt::red));
+//    setRect(0,0,lifeWidth, lifeHeight);
+    setRect(0,0,50,50);
+    world = worldPointer;
+    methods = allMethods;
+    setData(itemType, lifeItem);
+
+    DNA = new DNAClass(this, monoparent->getDNA()->toString());
+
+    for(int i = 0; i < 16; i++)
+        memory[i] = 0;
+
+    health = healthValue;
+    stamina = 500;
+    healthView = new QGraphicsTextItem(QString::number(health), this);
+    staminaView = new QGraphicsTextItem(QString::number(stamina), this);
+    staminaView->moveBy(0, 30);
+}
+
+LifeCell::LifeCell(WorldController *worldPointer, MethodLists *allMethods, LifeCell *father, LifeCell *mother) : QGraphicsRectItem()
+{
+
 }
 
 qint32 LifeCell::getHealth()
@@ -91,7 +114,7 @@ WorldController* LifeCell::getWorld()
     return world;
 }
 
-MethodLists*     LifeCell::getMethods()
+MethodLists* LifeCell::getMethods()
 {
     return methods;
 }
@@ -99,11 +122,8 @@ MethodLists*     LifeCell::getMethods()
 void LifeCell::live()
 {
     finished = false;
-    DNA->run();
-    qDebug() << "pos down " << x()+(rect().width()/2);
-    qDebug() << "pos down " << y()+(rect().height()+1);
-    qDebug() << pos();
-    qDebug() << "";
+    world->removeItem(this);
+    DNA->runDNA();
 }
 
 bool LifeCell::isFinished()
@@ -113,10 +133,16 @@ bool LifeCell::isFinished()
 
 void LifeCell::setFinish()
 {
+    world->addItem(this);
     finished = true;
 }
 
 bool LifeCell::isDead()
 {
     return dead;
+}
+
+DNAClass* LifeCell::getDNA()
+{
+    return DNA;
 }

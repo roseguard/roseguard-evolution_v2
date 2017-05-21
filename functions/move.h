@@ -1,14 +1,14 @@
+#ifndef MOVE_H
+#define MOVE_H
+
 #include "methodlists.h"
 #include "lifecell.h"
 #include "worldcontroller.h"
-
-#define randomSide 0
-#define randomSideCountLeft 1
+#include "memdef.h"
 
 int moveDown(LifeCell *life)
 {
-    if(life->damageStamina(5)<=0)
-        life->setFinish();
+    life->damageStamina(5);
     QDesktopWidget desk;
     if(life->rect().height()+life->y() < desk.height())
     {
@@ -34,8 +34,7 @@ int moveDown(LifeCell *life)
 
 int moveUp(LifeCell *life)
 {
-    if(life->damageStamina(5)<=0)
-        life->setFinish();
+    life->damageStamina(5);
     if(life->rect().height()+life->y() > 0)
     {
         qreal tempx = life->x()+(life->rect().width()/2);
@@ -60,8 +59,7 @@ int moveUp(LifeCell *life)
 
 int moveLeft(LifeCell *life)
 {
-    if(life->damageStamina(5)<=0)
-        life->setFinish();
+    life->damageStamina(5);
     if(life->rect().height()+life->y() > 0)
     {
         qreal tempx = life->x()-1;
@@ -86,8 +84,7 @@ int moveLeft(LifeCell *life)
 
 int moveRight(LifeCell *life)
 {
-    if(life->damageStamina(5)<=0)
-        life->setFinish();
+    life->damageStamina(5);
     QDesktopWidget desk;
     if(life->rect().height()+life->y() < desk.width())
     {
@@ -113,8 +110,7 @@ int moveRight(LifeCell *life)
 
 int moveRandom(LifeCell *life)
 {
-    if(life->damageStamina(1)<=0)
-        life->setFinish();
+    life->damageStamina(1);
     if(life->memory[randomSide]!=4 && life->memory[randomSideCountLeft]!=0)
     {
         switch(life->memory[randomSide])
@@ -142,3 +138,5 @@ int moveRandom(LifeCell *life)
         return 0;
     }
 }
+
+#endif

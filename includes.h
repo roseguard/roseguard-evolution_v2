@@ -14,6 +14,13 @@
 #include <QTimer>
 #include <QApplication>
 #include <QFile>
+#include <QThread>
+#include <QProgressBar>
+#include <QGraphicsProxyWidget>
+#include <QKeyEvent>
+
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 class LifeCell;
 class MethodLists;

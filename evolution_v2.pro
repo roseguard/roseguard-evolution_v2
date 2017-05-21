@@ -41,7 +41,9 @@ HEADERS  += viewer.h \
     functionsfile.h \
     functions/eat.h \
     functions/isFood.h \
-    functions/move.h
+    functions/move.h \
+    functions/replicate.h \
+    functions/memdef.h
 
 RESOURCES += \
     resource.qrc

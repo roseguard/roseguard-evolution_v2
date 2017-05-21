@@ -5,7 +5,7 @@ Gene::Gene()
 
 }
 
-Gene::Gene(LifeCell *organism, ActionPointer thisAction, QString thisActionName, QVector<Gene> caseActionList)
+Gene::Gene(LifeCell *organism, ActionPointer thisAction, QString thisActionName, QVector<Gene*> caseActionList)
 {
     caseActions = caseActionList;
     baseAction = thisAction;
@@ -13,10 +13,11 @@ Gene::Gene(LifeCell *organism, ActionPointer thisAction, QString thisActionName,
     life = organism;
 }
 
-void Gene::changeCaseAction(qint16 index, Gene action)
+void Gene::changeCaseAction(qint16 index, Gene* action)
 {
     if(index < caseActions.length())
     {
+        delete caseActions.at(index);
         caseActions.replace(index, action);
     }
 }
@@ -27,23 +28,31 @@ void Gene::changeBaseAction(ActionPointer action, QString name)
     actionName = name;
 }
 
-void Gene::appendCase(Gene action)
+void Gene::appendCase(Gene* action)
 {
     caseActions.append(action);
 }
 
-int Gene::run()
+void Gene::run()
 {
-    qDebug() << "runned " << actionName;
-    qDebug() << life->pos();
+    runGene();
+}
+
+int Gene::runGene()
+{
+//    QFuture<int> future = QtConcurrent::run(baseAction, life);
+    if(life->isFinished())
+        return 0;
     int value = baseAction(life);
-    if(life->getStamina()<=0)
+//    future.waitForFinished();
+//    int value = future.result();
+    if(life->getStamina()<=0 && !life->isFinished())
         life->setFinish();
     if(!life->isFinished())
     {
         if(value < caseActions.length() && value >= 0)
         {
-            return caseActions[value].run();
+            return caseActions[value]->runGene();
         }
     }
     return value;
@@ -51,12 +60,12 @@ int Gene::run()
 
 QVector<Gene*> Gene::getCaseActions()
 {
-    QVector<Gene*> temp;
-    for(int i = 0; i < caseActions.length(); i++)
-    {
-        temp.append(&caseActions[i]);
-    }
-    return temp;
+//    QVector<Gene*> temp;
+//    for(int i = 0; i < caseActions.length(); i++)
+//    {
+//        temp.append(caseActions[i]);
+//    }
+    return caseActions;
 }
 
 ActionPointer Gene::getBaseAction()
@@ -73,7 +82,7 @@ int Gene::runGeneAt(int index)
 {
     if(index >= 0 && index < caseActions.length())
     {
-        return caseActions[index].run();
+        return caseActions[index]->runGene();
     }
     else
     {
@@ -85,7 +94,7 @@ int Gene::runGeneAtModule(int index)
 {
     if(caseActions.length()>0)
     {
-        return caseActions[index%caseActions.length()].run();
+        return caseActions[index % caseActions.length()]->runGene();
     }
     else
     {

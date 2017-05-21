@@ -1,7 +1,14 @@
+#ifndef ISFOOD_H
+#define ISFOOD_H
+
+#include "methodlists.h"
+#include "lifecell.h"
+#include "worldcontroller.h"
+#include "memdef.h"
+
 int isFoodDown(LifeCell *life)
 {
-    if(life->damageStamina(3)<=0)
-        life->setFinish();
+    life->damageStamina(3);
     WorldController *world = life->getWorld();
     qreal tempx = life->x()+(life->rect().width()/2);
     qreal tempy = life->y()+(life->rect().height()+1);
@@ -25,8 +32,7 @@ int isFoodDown(LifeCell *life)
 
 int isFoodUp(LifeCell *life)
 {
-    if(life->damageStamina(3)<=0)
-        life->setFinish();
+    life->damageStamina(3);
     WorldController *world = life->getWorld();
     qreal tempx = life->x()+(life->rect().width()/2);
     qreal tempy = life->y()-1;
@@ -50,10 +56,9 @@ int isFoodUp(LifeCell *life)
 
 int isFoodLeft(LifeCell *life)
 {
-    if(life->damageStamina(3)<=0)
-        life->setFinish();
+    life->damageStamina(3);
     WorldController *world = life->getWorld();
-    qreal tempx = life->x()+(life->rect().width()-1);
+    qreal tempx = life->x()-1;
     qreal tempy = life->y()+(life->rect().height()/2);
     QGraphicsItem *itemDown = world->itemAt(tempx , tempy, QTransform());
     if(itemDown)
@@ -75,8 +80,7 @@ int isFoodLeft(LifeCell *life)
 
 int isFoodRight(LifeCell *life)
 {
-    if(life->damageStamina(3)<=0)
-        life->setFinish();
+    life->damageStamina(3);
     WorldController *world = life->getWorld();
     qreal tempx = life->x()+(life->rect().width()+1);
     qreal tempy = life->y()+(life->rect().height()/2);
@@ -97,3 +101,5 @@ int isFoodRight(LifeCell *life)
         return 0;
     }
 }
+
+#endif
