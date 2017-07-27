@@ -11,53 +11,35 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    qsrand(QTime::currentTime().msec());
     Viewer w;
-    qDebug() << "lalalala";
 
-    //////////////////
-    //////////////////
-    {
-//        ActionPointer first = [](LifeCell * curLife){qDebug() << "peaceofshit1"; return 0;};
-//        ActionPointer second = [](LifeCell * curLife){qDebug() << "peaceofshit2"; return 0;};
-//        ActionPointer third = [](LifeCell * curLife){qDebug() << "peaceofshit3"; return 0;};
+//    {
+//        MethodLists::baseInit();
+//        MethodLists::initBaseMethods();
 
+//        WorldController *world = new WorldController(0,0,500,500, 0);
+//        LifeCell *mother = new LifeCell(world);
+//        LifeCell *father = new LifeCell(world);
+//        LifeCell *child = new LifeCell(world, father, mother);
 
-//        MethodLists *methods = new MethodLists();
-//        methods->append(first, "first");
-//        methods->append(second, "second");
-//        methods->append(third, "third");
+//        QFile fatherFile("D:\\test\\father.ros");
+//        QFile motherFile("D:\\test\\mother.ros");
+//        QFile childFile("D:\\test\\child.ros");
 
-//        LifeCell *life = new LifeCell(w.world, methods);
-////        QVector<Gene> tempVect;
-////        QVector<Gene> tempVect2;
-////        tempVect2.append(Gene(life, third, "third", QVector<Gene>(0)));
-////        tempVect.append(Gene(life, second, "second", tempVect2));
-////        Gene gene(life, first, "first", tempVect);
+//        fatherFile.open(QIODevice::WriteOnly);
+//        motherFile.open(QIODevice::WriteOnly);
+//        childFile.open(QIODevice::WriteOnly);
 
-//        QFile tf("D:/test2.ros");
-//        tf.open(QIODevice::ReadOnly);
-//        QString dnaStr = tf.readAll();
+//        fatherFile.write(father->getDNA()->toString().toLatin1());
+//        motherFile.write(mother->getDNA()->toString().toLatin1());
+//        childFile.write(child->getDNA()->toString().toLatin1());
 
-//        DNAClass dna(life, dnaStr);
-//        dna.randomMutation();
+//        fatherFile.close();
+//        motherFile.close();
+//        childFile.close();
 
-//        QFile f("D:/testsss.ros");
-//        f.open(QIODevice::WriteOnly);
-//        f.write(dna.toString().toLatin1());
-//        f.close();
-//        dna.run();
-
-//        f.open(QIODevice::ReadOnly);
-////        DNAClass test(life, f.readAll());
-////        f.close();
-////        qDebug() << test.toString();
-////        f.setFileName("D:/test2.ros");
-////        f.open(QIODevice::WriteOnly);
-////        f.write(test.toString().toLatin1());
-////        f.close();
-    }
-    //////////////////
-    //////////////////
-
+//        return 1;
+//    }
     return a.exec();
 }

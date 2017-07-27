@@ -6,9 +6,10 @@
 class LifeCell : public QGraphicsRectItem
 {
 public:
-    LifeCell(WorldController *worldPointer, MethodLists *allMethods);
-    LifeCell(WorldController *worldPointer, MethodLists *allMethods, LifeCell *monoparent, qint32 healthValue);
-    LifeCell(WorldController *worldPointer, MethodLists *allMethods, LifeCell *father, LifeCell *mother);
+    LifeCell(WorldController *worldPointer);
+    LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 healthValue);
+    LifeCell(WorldController *worldPointer, LifeCell *father, LifeCell *mother);
+    ~LifeCell();
     qint32 getHealth();
     qint32 getStamina();
     qint8  getMutationChance();
@@ -17,7 +18,6 @@ public:
     void   feedLife(qint32 value);
     void   restoreStaminaFromHealth();
     WorldController* getWorld();
-    MethodLists*     getMethods();
     DNAClass*        getDNA();
     bool    isDead();
     void    live();
@@ -25,6 +25,9 @@ public:
 
     bool    isFinished();
     void    setFinish();
+
+//    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     QDesktopWidget desk;
@@ -34,15 +37,15 @@ private:
     QGraphicsTextItem       *healthView;
     QGraphicsTextItem       *staminaView;
 
+    QGraphicsTextItem       *DNACode;
+
     qint32                  health;
     qint32                  stamina;
     qint8                   mutationChance;
     DNAClass                *DNA;
     WorldController         *world;
-    MethodLists             *methods;
     bool                    finished = true;
     bool                    dead = false;
-    QThread                 *thisThread;
 };
 
 #endif // LIFECELL_H

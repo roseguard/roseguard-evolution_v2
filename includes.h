@@ -18,6 +18,8 @@
 #include <QProgressBar>
 #include <QGraphicsProxyWidget>
 #include <QKeyEvent>
+#include <QTextDocument>
+#include <QGraphicsSceneMouseEvent>
 
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
@@ -37,5 +39,7 @@ typedef int (*ActionPointer)(LifeCell*);
 #define lifeItem        0
 #define foodItem        1
 #define backgroundItem  2
+
+#define baseHealth      80
 
 #endif // MY_DEFINES_H

@@ -6,13 +6,11 @@
 DNAClass::DNAClass(LifeCell *organism)
 {
     life = organism;
-    qsrand(QTime::currentTime().msec());
 }
 
 DNAClass::DNAClass(LifeCell *organism, QString DNAString)
 {
     life = organism;
-    qsrand(QTime::currentTime().msec());
 
     QVector<QString> DNACode = DNAString.split('\n').toVector();
     for(int i = 0; i < DNACode.length(); i++)
@@ -40,13 +38,21 @@ DNAClass::DNAClass(LifeCell *organism, QString DNAString)
     for(quint32 index = 0; index < DNACode.length();)
     {
         QVector<Gene*> tempGens;
-        Gene* testGen = new Gene(life, life->getMethods()->getActionAt(DNACode.at(index)), DNACode.at(index), QVector<Gene*>(0));
+        Gene* testGen = new Gene(life, MethodLists::getActionAt(DNACode.at(index)), DNACode.at(index), QVector<Gene*>(0));
         tempGens = createGeneChain(DNACode, tabsOfCode, index);
         for(int i = 0; i < tempGens.length(); i++)
         {
             testGen->appendCase(tempGens.at(i));
         }
         genePool.append(testGen);
+    }
+}
+
+DNAClass::~DNAClass()
+{
+    for(int i = 0; i < genePool.length(); i++)
+    {
+        delete genePool.at(i);
     }
 }
 
@@ -63,7 +69,7 @@ QVector<Gene*> DNAClass::createGeneChain(QVector<QString> DNACode, QVector<quint
         else
         {
             quint32 thisIndex = index;
-            Gene* tempGen = new Gene(life, life->getMethods()->getActionAt(DNACode.at(thisIndex)), DNACode.at(thisIndex), createGeneChain(DNACode, tabsLen, index));
+            Gene* tempGen = new Gene(life, MethodLists::getActionAt(DNACode.at(thisIndex)), DNACode.at(thisIndex), createGeneChain(DNACode, tabsLen, index));
             thisLineGens.append(tempGen);
             index--;
         }
@@ -109,17 +115,17 @@ void DNAClass::randomMutation()
                 geneIndex = (qrand()%(allGens.length())+1);
                 if(geneIndex==allGens.length()) /**if true - put at the back of main gene pool */
                 {
-                    quint32 methodIndex = life->getMethods()->getRandomIndex();
-                    ActionPointer method = life->getMethods()->getActionAt(methodIndex);
-                    QString methodName = life->getMethods()->getActionNameAt(methodIndex);
+                    quint32 methodIndex = MethodLists::getRandomIndex();
+                    ActionPointer method = MethodLists::getActionAt(methodIndex);
+                    QString methodName = MethodLists::getActionNameAt(methodIndex);
                     genePool.append(new Gene(life, method, methodName, QVector<Gene*>(0)));
                     return;
                 }
                 else
                 {
-                    quint32 methodIndex = life->getMethods()->getRandomIndex();
-                    ActionPointer method = life->getMethods()->getActionAt(methodIndex);
-                    QString methodName = life->getMethods()->getActionNameAt(methodIndex);
+                    quint32 methodIndex = MethodLists::getRandomIndex();
+                    ActionPointer method = MethodLists::getActionAt(methodIndex);
+                    QString methodName = MethodLists::getActionNameAt(methodIndex);
                     allGens[geneIndex]->appendCase(new Gene(life, method, methodName, QVector<Gene*>(0)));
                     return;
                 }
@@ -127,19 +133,18 @@ void DNAClass::randomMutation()
             else                /** Change gene if false */
             {
                 geneIndex = (qrand()%(allGens.length()));
-                quint32 methodIndex = life->getMethods()->getRandomIndex();
-                ActionPointer method = life->getMethods()->getActionAt(methodIndex);
-                QString methodName = life->getMethods()->getActionNameAt(methodIndex);
+                quint32 methodIndex = MethodLists::getRandomIndex();
+                ActionPointer method = MethodLists::getActionAt(methodIndex);
+                QString methodName = MethodLists::getActionNameAt(methodIndex);
                 allGens[geneIndex]->changeBaseAction(method, methodName);
             }
         }
     }
     else
     {
-        MethodLists *list = life->getMethods();
-        quint32 methodIndex = life->getMethods()->getRandomIndex();
-        ActionPointer method = life->getMethods()->getActionAt(methodIndex);
-        QString methodName = life->getMethods()->getActionNameAt(methodIndex);
+        quint32 methodIndex = MethodLists::getRandomIndex();
+        ActionPointer method = MethodLists::getActionAt(methodIndex);
+        QString methodName = MethodLists::getActionNameAt(methodIndex);
         genePool.append(new Gene(life, method, methodName, QVector<Gene*>(0)));
     }
 }
@@ -150,8 +155,8 @@ void DNAClass::runDNA()
     {
         if(life->getStamina()<=0)
             life->restoreStaminaFromHealth();
-//        genePool[i]->runGene();
-        genePool[i]->run();
+        genePool[i]->runGene();
+//        genePool[i]->run();
     }
     if(!life->isFinished())
         life->setFinish();
@@ -196,4 +201,16 @@ QVector<Gene*> DNAClass::getGenePool()
 //    for(int i = 0; i < genePool.length(); i++)
 //        temp.append(&genePool[i]);
 //    return temp;
+}
+
+QVector<Gene *> DNAClass::getAllGens()
+{
+    QVector<Gene*> allGens;
+    for(int i = 0; i < genePool.length(); i++)
+        allGens.append(genePool[i]);
+    for(int i = 0; i < allGens.length(); i++)
+    {
+        allGens.append(allGens.at(i)->getCaseActions());
+    }
+    return allGens;
 }

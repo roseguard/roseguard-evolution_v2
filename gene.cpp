@@ -13,6 +13,25 @@ Gene::Gene(LifeCell *organism, ActionPointer thisAction, QString thisActionName,
     life = organism;
 }
 
+Gene::Gene(LifeCell *organism, Gene *copyGene)
+{
+    life = organism;
+    baseAction = copyGene->baseAction;
+    actionName = copyGene->actionName;
+    for(int i = 0; i < copyGene->getCaseActions().length(); i++)
+    {
+        caseActions.append(new Gene(organism, copyGene->getCaseActions().at(i)));
+    }
+}
+
+Gene::~Gene()
+{
+    for(int i = 0; i < caseActions.length(); i++)
+    {
+        delete caseActions[i];
+    }
+}
+
 void Gene::changeCaseAction(qint16 index, Gene* action)
 {
     if(index < caseActions.length())
@@ -31,11 +50,6 @@ void Gene::changeBaseAction(ActionPointer action, QString name)
 void Gene::appendCase(Gene* action)
 {
     caseActions.append(action);
-}
-
-void Gene::run()
-{
-    runGene();
 }
 
 int Gene::runGene()

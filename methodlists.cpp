@@ -1,34 +1,46 @@
 #include "methodlists.h"
 #include "functionsfile.h"
 
+
+MethodLists* MethodLists::singleList;
+
 MethodLists::MethodLists()
 {
-    qsrand(QTime::currentTime().msec());
+}
+
+MethodLists::~MethodLists()
+{
+
+}
+
+void MethodLists::init()
+{
+    singleList = new MethodLists;
 }
 
 void MethodLists::append(ActionPointer action, QString actionName)
 {
-    list.append(action);
-    names.append(actionName);
+    singleList->list.append(action);
+    singleList->names.append(actionName);
 }
 
 quint32 MethodLists::getRandomIndex()
 {
-    return qrand()%list.length();
+    return qrand()%singleList->list.length();
 }
 
 ActionPointer MethodLists::getActionAt(quint32 index)
 {
-    return list.at(index);
+    return singleList->list.at(index);
 }
 
 ActionPointer MethodLists::getActionAt(QString name)
 {
-    for(int i = 0; i < names.length(); i++)
+    for(int i = 0; i < singleList->names.length(); i++)
     {
-        if(names.at(i)==name)
+        if(singleList->names.at(i)==name)
         {
-            return list.at(i);
+            return singleList->list.at(i);
         }
     }
     return nullptr;
@@ -36,28 +48,28 @@ ActionPointer MethodLists::getActionAt(QString name)
 
 QString MethodLists::getActionNameAt(quint32 index)
 {
-    return names.at(index);
+    return singleList->names.at(index);
 }
 
 void MethodLists::removeAt(qint32 index)
 {
-    if(index < list.length())
+    if(index < singleList->list.length())
     {
-        list.removeAt(index);
-        names.removeAt(index);
+        singleList->list.removeAt(index);
+        singleList->names.removeAt(index);
     }
 }
 
 void MethodLists::replace(qint32 index, ActionPointer action, QString actionName)
 {
-    if(index < list.length())
+    if(index < singleList->list.length())
     {
-        list.replace(index, action);
-        names.replace(index, actionName);
+        singleList->list.replace(index, action);
+        singleList->names.replace(index, actionName);
     }
 }
 
 void MethodLists::initBaseMethods()
 {
-    writeFunctions(this);
+    writeFunctions();
 }

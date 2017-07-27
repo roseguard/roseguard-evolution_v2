@@ -6,31 +6,47 @@
 #include "functions/isFood.h"
 #include "functions/move.h"
 #include "functions/replicate.h"
+#include "functions/islife.h"
+#include "functions/bite.h"
 
-void writeFunctions(MethodLists *list)
+void writeFunctions()
 {
-    qsrand(QTime::currentTime().msec());
 //    list->append(&testFunc, "testFunc");
 //    list->append(&testFunc2, "testFunc2");
 
-    list->append(&isFoodDown, "isFoodDown");
-    list->append(&isFoodUp, "isFoodUp");
-    list->append(&isFoodLeft, "isFoodLeft");
-    list->append(&isFoodRight, "isFoodRight");
+    MethodLists::append(&isFoodDown,   "isFoodDown");
+    MethodLists::append(&isFoodUp,     "isFoodUp");
+    MethodLists::append(&isFoodLeft,   "isFoodLeft");
+    MethodLists::append(&isFoodRight,  "isFoodRight");
 
-    list->append(&moveDown, "moveDown");
-    list->append(&moveUp, "moveUp");
-    list->append(&moveLeft, "moveLeft");
-    list->append(&moveRight, "moveRight");
-    list->append(&moveRandom, "moveRandom");
+    MethodLists::append(&moveDown,     "moveDown");
+    MethodLists::append(&moveUp,       "moveUp");
+    MethodLists::append(&moveLeft,     "moveLeft");
+    MethodLists::append(&moveRight,    "moveRight");
+    MethodLists::append(&moveRandom,   "moveRandom");
 
-    list->append(&eatDown, "eatDown");
-    list->append(&eatUp, "eatUp");
-    list->append(&eatLeft, "eatLeft");
-    list->append(&eatRight, "eatRight");
+    MethodLists::append(&eatDown,  "eatDown");
+    MethodLists::append(&eatUp,    "eatUp");
+    MethodLists::append(&eatLeft,  "eatLeft");
+    MethodLists::append(&eatRight, "eatRight");
 
-    list->append(&isReadyForReplication, "isReadyForReplication");
-    list->append(&replicate, "replicate");
+    MethodLists::append(&isReadyForReplication, "isReadyForReplication");
+    MethodLists::append(&replicate, "replicate");
+
+    MethodLists::append(&isLifeDown,   "isLifeDown");
+    MethodLists::append(&isLifeUp,     "isLifeUp");
+    MethodLists::append(&isLifeLeft,   "isLifeLeft");
+    MethodLists::append(&isLifeRight,  "isLifeRight");
+
+    MethodLists::append(&biteDown,  "biteDown");
+    MethodLists::append(&biteUp,    "biteUp");
+    MethodLists::append(&biteLeft,  "biteLeft");
+    MethodLists::append(&biteRight, "biteRight");
+
+    MethodLists::append(&rapeDown,  "rapeDown");
+    MethodLists::append(&rapeUp,    "rapeUp");
+    MethodLists::append(&rapeLeft,  "rapeLeft");
+    MethodLists::append(&rapeRight, "rapeRight");
 }
 
 #endif // FUNCTIONSFILE_H

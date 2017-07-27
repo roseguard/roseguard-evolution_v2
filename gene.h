@@ -6,18 +6,19 @@
 
 class LifeCell;
 
-class Gene : public QThread
+class Gene
 {
 public:
     Gene();
     Gene(LifeCell* organism, ActionPointer thisAction, QString thisActionName, QVector<Gene*> caseActionList);
+    Gene(LifeCell* organism, Gene* copyGene);
+    ~Gene();
     void changeCaseAction(qint16 index, Gene* action);
     void appendCase(Gene* action);
     void changeBaseAction(ActionPointer action, QString name);
     QVector<Gene*> getCaseActions();
     ActionPointer getBaseAction();
     QString getActionName();
-    void run();
     int runGene();
     int runGeneAt(int index);
     int runGeneAtModule(int index);
