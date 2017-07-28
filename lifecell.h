@@ -19,6 +19,7 @@ public:
     void   restoreStaminaFromHealth();
     WorldController* getWorld();
     DNAClass*        getDNA();
+    void             changeDNA(DNAClass *newDNA);
     bool    isDead();
     void    live();
     int     memory[16];
@@ -28,6 +29,7 @@ public:
 
 //    void mousePressEvent(QMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     QDesktopWidget desk;
@@ -38,6 +40,7 @@ private:
     QGraphicsTextItem       *staminaView;
 
     QGraphicsTextItem       *DNACode;
+    DNAHotEdit              *DNAEditor;
 
     qint32                  health;
     qint32                  stamina;

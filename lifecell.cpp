@@ -2,6 +2,7 @@
 #include "worldcontroller.h"
 #include "dnaclass.h"
 #include "methodlists.h"
+#include "dnahotedit.h"
 
 LifeCell::LifeCell(WorldController *worldPointer)
 {
@@ -37,6 +38,8 @@ LifeCell::LifeCell(WorldController *worldPointer)
     DNACode->setPlainText(DNA->toString());
     DNACode->moveBy(rect().width(), 0);
     DNACode->hide();
+
+    DNAEditor = Q_NULLPTR;
 }
 
 LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 healthValue) : QGraphicsRectItem()
@@ -68,6 +71,8 @@ LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 h
     DNACode->setPlainText(DNA->toString());
     DNACode->moveBy(rect().width(), 0);
     DNACode->hide();
+
+    DNAEditor = Q_NULLPTR;
 }
 
 LifeCell::LifeCell(WorldController *worldPointer, LifeCell *father, LifeCell *mother) : QGraphicsRectItem()
@@ -110,12 +115,16 @@ LifeCell::LifeCell(WorldController *worldPointer, LifeCell *father, LifeCell *mo
     DNACode->setPlainText(DNA->toString());
     DNACode->moveBy(rect().width(), 0);
     DNACode->hide();
+
+    DNAEditor = Q_NULLPTR;
 }
 
 LifeCell::~LifeCell()
 {
     delete DNA;
     delete DNACode;
+    if(DNAEditor)
+        delete DNAEditor;
 }
 
 void LifeCell::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -138,6 +147,21 @@ void LifeCell::mousePressEvent(QGraphicsSceneMouseEvent *event)
     else if(event->buttons()==Qt::MiddleButton)
     {
         damageHealth(10);
+    }
+}
+
+void LifeCell::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton)
+    {
+        if(!DNAEditor)
+        {
+            DNAEditor = new DNAHotEdit(this);
+        }
+        if(DNAEditor->isHidden())
+            DNAEditor->show();
+        else
+            DNAEditor->hide();
     }
 }
 
@@ -194,11 +218,9 @@ WorldController* LifeCell::getWorld()
     return world;
 }
 
-
 void LifeCell::live()
 {
     finished = false;
-    world->removeItem(this);
     DNA->runDNA();
 }
 
@@ -209,7 +231,6 @@ bool LifeCell::isFinished()
 
 void LifeCell::setFinish()
 {
-    world->addItem(this);
     finished = true;
 }
 
@@ -221,4 +242,11 @@ bool LifeCell::isDead()
 DNAClass* LifeCell::getDNA()
 {
     return DNA;
+}
+
+void LifeCell::changeDNA(DNAClass *newDNA)
+{
+    delete DNA;
+    DNA = newDNA;
+    DNACode->setPlainText(DNA->toString());
 }

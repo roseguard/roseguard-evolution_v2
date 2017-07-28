@@ -133,6 +133,7 @@ void WorldController::makeStep()
         {
             removeItem(lifes.at(i));
             delete lifes.at(i);
+            lifes[i] = Q_NULLPTR;
             lifes.removeAt(i);
             i--;
         }

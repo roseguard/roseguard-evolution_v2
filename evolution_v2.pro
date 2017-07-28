@@ -23,13 +23,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
+
+
 SOURCES += main.cpp\
         viewer.cpp \
     methodlists.cpp \
     lifecell.cpp \
     worldcontroller.cpp \
     dnaclass.cpp \
-    gene.cpp
+    gene.cpp \
+    dnahotedit.cpp \
+    pathchooser.cpp
 
 HEADERS  += viewer.h \
     methodlists.h \
@@ -45,7 +49,9 @@ HEADERS  += viewer.h \
     functions/replicate.h \
     functions/memdef.h \
     functions/islife.h \
-    functions/bite.h
+    functions/bite.h \
+    dnahotedit.h \
+    pathchooser.h
 
 RESOURCES += \
     resource.qrc

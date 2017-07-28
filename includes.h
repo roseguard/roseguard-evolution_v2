@@ -4,31 +4,44 @@
 #include <QDesktopWidget>
 #include <QSize>
 #include <QVector>
+
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
+
 #include <QDebug>
+
 #include <QTime>
 #include <QTimer>
 #include <QApplication>
+
 #include <QFile>
 #include <QThread>
-#include <QProgressBar>
-#include <QGraphicsProxyWidget>
-#include <QKeyEvent>
-#include <QTextDocument>
-#include <QGraphicsSceneMouseEvent>
 
-#include <QFuture>
-#include <QtConcurrent/QtConcurrent>
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QTextBrowser>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QFileSystemModel>
+#include <QTreeView>
+#include <QLineEdit>
+
+#include <QGraphicsProxyWidget>
+
+#include <QKeyEvent>
+#include <QGraphicsSceneMouseEvent>
 
 class LifeCell;
 class MethodLists;
 class Gene;
 class WorldController;
 class DNAClass;
+class DNAHotEdit;
+class PathChooser;
 
 typedef int (*ActionPointer)(LifeCell*);
 
