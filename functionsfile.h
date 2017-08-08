@@ -8,6 +8,7 @@
 #include "functions/replicate.h"
 #include "functions/islife.h"
 #include "functions/bite.h"
+#include "functions/emptyactions.h"
 
 void writeFunctions()
 {
@@ -47,6 +48,10 @@ void writeFunctions()
     MethodLists::append(&rapeUp,    "rapeUp");
     MethodLists::append(&rapeLeft,  "rapeLeft");
     MethodLists::append(&rapeRight, "rapeRight");
+
+    MethodLists::append(&emptyBase,             "emptyBase");
+    MethodLists::append(&emptyWithFinishing,    "emptyWithFinishing");
+    MethodLists::append(&emptyWithReturn,       "emptyWithReturn");
 }
 
 #endif // FUNCTIONSFILE_H

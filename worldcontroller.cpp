@@ -19,6 +19,10 @@ WorldController::WorldController(qreal x, qreal y, qreal width, qreal height, QO
     stepTimer->setSingleShot(true);
     connect(stepTimer, SIGNAL(timeout()), this, SLOT(makeStep()));
 
+    autoSaveTimer = new QTimer(this);
+    connect(autoSaveTimer, SIGNAL(timeout()), this, SLOT(autoSave()));
+    autoSaveTimer->start(600000);
+
     speedView = new QGraphicsTextItem;
     speedView->setPlainText(QString::number(speed));
     speedView->show();
@@ -27,7 +31,7 @@ WorldController::WorldController(qreal x, qreal y, qreal width, qreal height, QO
     speedView->setPos(desk.width()-100, 50);
     addItem(speedView);
 
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 1; i++)
     {
         addLife();
         addFood();
@@ -91,6 +95,7 @@ void WorldController::addFood()
     food->setPos(tempx, tempy);
     food->setData(itemType, foodItem);
     addItem(food);
+    foodCount++;
 }
 
 void WorldController::keyPressEvent(QKeyEvent *event)
@@ -116,11 +121,38 @@ void WorldController::keyPressEvent(QKeyEvent *event)
         if(isLoop)
             makeStep();
     }
+    else if(event->text()=="f")
+    {
+        addFood();
+    }
+    else if(event->text()=="e")
+    {
+        addLife();
+    }
+    else if(event->text()=="q")
+    {
+        QGraphicsItem *lifePtr = itemAt(QCursor().pos(), QTransform());
+        if(lifePtr->data(itemType)==lifeItem)
+        {
+            addLife(new LifeCell(this, (LifeCell*)(lifePtr), baseHealth), true);
+        }
+    }
+    else if(event->text()=="r")
+    {
+        QGraphicsItem *lifePtr = itemAt(QCursor().pos(), QTransform());
+        if(lifePtr->data(itemType)==lifeItem)
+        {
+            ((LifeCell*)(lifePtr))->getDNA()->randomMutation();
+        }
+    }
+    else if(event->text()=="s")
+    {
+        autoSave();
+    }
 }
 
 void WorldController::makeStep()
 {
-    qDebug() << lifes.length();
     for(int i = 0; i < lifes.length(); i++)
     {
         while(!lifes.at(i)->isFinished());
@@ -143,12 +175,15 @@ void WorldController::makeStep()
             lifes[i]->live();
         }
     }
-    if(qrand()%100 > 80+lifes.length())
+    if(qrand()%100 > 92+lifes.length())
         addFood();
     int tempLenght = lifes.length();
     while(tempLenght < 5)
     {
-        addLife(lifes.first(), false);
+        if(qrand()%100>50)
+            addLife(lifes.first(), false);
+        else
+            addLife();
         tempLenght++;
     }
     if(lifes.length()>15)
@@ -161,5 +196,24 @@ void WorldController::makeStep()
     if(isLoop)
     {
         stepTimer->start(speed);
+    }
+}
+
+void WorldController::autoSave()
+{
+    QDir dir(QCoreApplication::applicationDirPath());
+    dir.mkdir("saves");
+    dir.cd("saves");
+    dir.mkdir(QDate::currentDate().toString("dd_MM_yyyy"));
+    dir.cd(QDate::currentDate().toString("dd_MM_yyyy"));
+    dir.mkdir(QTime::currentTime().toString("hh_mm_ss"));
+    dir.cd(QTime::currentTime().toString("hh_mm_ss"));
+    QString time = "/%1.dna";
+    for(int i = 0; i < lifes.length(); i++)
+    {
+        QFile newLifeBackup(dir.path()+time.arg(i));
+        newLifeBackup.open(QIODevice::WriteOnly);
+        newLifeBackup.write(lifes.at(i)->getDNA()->toString().toLatin1());
+        newLifeBackup.close();
     }
 }

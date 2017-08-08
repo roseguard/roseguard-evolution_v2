@@ -15,6 +15,7 @@ public:
     qint8  getMutationChance();
     qint32 damageHealth(qint32 value);
     qint32 damageStamina(qint32 value);
+    void   updateCode();
     void   feedLife(qint32 value);
     void   restoreStaminaFromHealth();
     WorldController* getWorld();
@@ -44,7 +45,7 @@ private:
 
     qint32                  health;
     qint32                  stamina;
-    qint8                   mutationChance;
+    qint8                   mutationChance = 50;
     DNAClass                *DNA;
     WorldController         *world;
     bool                    finished = true;

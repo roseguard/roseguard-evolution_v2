@@ -6,23 +6,25 @@
 
 LifeCell::LifeCell(WorldController *worldPointer)
 {
+    DNACode = Q_NULLPTR;
+    DNAEditor = Q_NULLPTR;
     setBrush(* new QBrush(Qt::red));
 //    setRect(0,0,lifeWidth, lifeHeight);
     setRect(0,0,50,50);
     world = worldPointer;
     setData(itemType, lifeItem);
 
-    QFile readCode("D:\\test\\dna.ros");
-    readCode.open(QIODevice::ReadOnly);
-    QString codeHandler = readCode.readAll();
+//    QFile readCode("D:\\test\\dna.ros");
+//    readCode.open(QIODevice::ReadOnly);
+//    QString codeHandler = readCode.readAll();
 
-    DNA = new DNAClass(this, codeHandler);
+//    DNA = new DNAClass(this, codeHandler);
 
-//    DNA = new DNAClass(this);
-//    for(int i = 0; i < 10; i++)
-//    {
-//        DNA->randomMutation();
-//    }
+    DNA = new DNAClass(this);
+    for(int i = 0; i < 10; i++)
+    {
+        DNA->randomMutation();
+    }
 
     for(int i = 0; i < 16; i++)
         memory[i] = 0;
@@ -44,6 +46,8 @@ LifeCell::LifeCell(WorldController *worldPointer)
 
 LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 healthValue) : QGraphicsRectItem()
 {
+    DNACode = Q_NULLPTR;
+    DNAEditor = Q_NULLPTR;
     setBrush(* new QBrush(Qt::red));
 //    setRect(0,0,lifeWidth, lifeHeight);
     setRect(0,0,50,50);
@@ -77,6 +81,8 @@ LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 h
 
 LifeCell::LifeCell(WorldController *worldPointer, LifeCell *father, LifeCell *mother) : QGraphicsRectItem()
 {
+    DNACode = Q_NULLPTR;
+    DNAEditor = Q_NULLPTR;
     setBrush(* new QBrush(Qt::red));
 //    setRect(0,0,lifeWidth, lifeHeight);
     setRect(0,0,50,50);
@@ -137,6 +143,7 @@ void LifeCell::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
         else
         {
+            DNACode->setPlainText(DNA->toString());
             DNACode->show();
         }
     }
@@ -159,7 +166,10 @@ void LifeCell::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
             DNAEditor = new DNAHotEdit(this);
         }
         if(DNAEditor->isHidden())
+        {
+            DNAEditor->plainNewDNA();
             DNAEditor->show();
+        }
         else
             DNAEditor->hide();
     }
@@ -196,6 +206,20 @@ qint32 LifeCell::damageStamina(qint32 value)
     stamina-=value;
     staminaView->setPlainText(QString::number(stamina));
     return stamina;
+}
+
+void LifeCell::updateCode()
+{
+    if(DNACode!=Q_NULLPTR)
+    {
+        if(DNACode->isVisible())
+            DNACode->setPlainText(DNA->toString());
+    }
+    if(DNAEditor!=Q_NULLPTR)
+    {
+        if(!DNAEditor->isHidden())
+            DNAEditor->plainNewDNA();
+    }
 }
 
 void LifeCell::feedLife(qint32 value)

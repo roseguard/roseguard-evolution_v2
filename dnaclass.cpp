@@ -93,24 +93,18 @@ void DNAClass::randomMutation()
 {
     if(genePool.length() > 0)
     {
-        if(qrand()%100 > life->getMutationChance())
+        if(qrand()%100 < life->getMutationChance())
         {
             /** Loading ptr of whole this dna (recursive) into one vector */
             QVector<Gene*> allGens;
             for(int i = 0; i < genePool.length(); i++)
-                allGens.append(genePool[i]);
+                allGens.append(genePool.at(i));
             for(int i = 0; i < allGens.length(); i++)
             {
-                allGens.append(allGens[i]->getCaseActions());
+                allGens.append(allGens.at(i)->getCaseActions());
             }
-
-//            /** Just for debag*/
-//            for(int i = 0; i < allGens.length(); i++)
-//            {
-//                qDebug() << allGens.at(i)->getActionName();
-//            }
             quint32 geneIndex;
-            if(qrand()%100 > 30) /** add one gene if true */
+            if(qrand()%100 > 50) /** add one gene if true */
             {
                 geneIndex = (qrand()%(allGens.length())+1);
                 if(geneIndex==allGens.length()) /**if true - put at the back of main gene pool */
@@ -126,17 +120,28 @@ void DNAClass::randomMutation()
                     quint32 methodIndex = MethodLists::getRandomIndex();
                     ActionPointer method = MethodLists::getActionAt(methodIndex);
                     QString methodName = MethodLists::getActionNameAt(methodIndex);
-                    allGens[geneIndex]->appendCase(new Gene(life, method, methodName, QVector<Gene*>(0)));
+                    allGens.at(geneIndex)->appendCase(new Gene(life, method, methodName, QVector<Gene*>(0)));
                     return;
                 }
             }
-            else                /** Change gene if false */
+            else                /** Change or delete gene if false */
             {
-                geneIndex = (qrand()%(allGens.length()));
-                quint32 methodIndex = MethodLists::getRandomIndex();
-                ActionPointer method = MethodLists::getActionAt(methodIndex);
-                QString methodName = MethodLists::getActionNameAt(methodIndex);
-                allGens[geneIndex]->changeBaseAction(method, methodName);
+                if(qrand()%100 > 50)    // change gene if true
+                {
+                    geneIndex = (qrand()%(allGens.length()));
+                    quint32 methodIndex = MethodLists::getRandomIndex();
+                    ActionPointer method = MethodLists::getActionAt(methodIndex);
+                    QString methodName = MethodLists::getActionNameAt(methodIndex);
+                    allGens.at(geneIndex)->changeBaseAction(method, methodName);
+                }
+                else                    //delete gene if false
+                {
+                    if(allGens.length()>3)
+                    {
+                        geneIndex = 1+(qrand()%(allGens.length()-1));
+                        delete allGens.at(geneIndex);
+                    }
+                }
             }
         }
     }
@@ -147,6 +152,7 @@ void DNAClass::randomMutation()
         QString methodName = MethodLists::getActionNameAt(methodIndex);
         genePool.append(new Gene(life, method, methodName, QVector<Gene*>(0)));
     }
+    life->updateCode();
 }
 
 void DNAClass::runDNA()
@@ -155,8 +161,7 @@ void DNAClass::runDNA()
     {
         if(life->getStamina()<=0)
             life->restoreStaminaFromHealth();
-        genePool[i]->runGene();
-//        genePool[i]->run();
+        genePool.at(i)->runGene();
     }
     if(!life->isFinished())
         life->setFinish();
@@ -173,8 +178,8 @@ QString DNAClass::toString()
         {
             for(int j = 0; j < tablen; j++)
                 out.append("\t");
-            out.append(allGens[i]->getActionName() + "\n");
-            out.append(recusiveGetGens(allGens[i], tablen+1));
+            out.append(allGens.at(i)->getActionName() + "\n");
+            out.append(recusiveGetGens(allGens.at(i), tablen+1));
         }
         return out;
     }
@@ -188,8 +193,8 @@ QString DNAClass::recusiveGetGens(Gene* lastGen, quint32 tablen)
     {
         for(int j = 0; j < tablen; j++)
             out.append("\t");
-        out.append(allGens[i]->getActionName() + "\n");
-        out.append(recusiveGetGens(allGens[i], tablen+1));
+        out.append(allGens.at(i)->getActionName() + "\n");
+        out.append(recusiveGetGens(allGens.at(i), tablen+1));
     }
     return out;
 }
@@ -197,20 +202,28 @@ QString DNAClass::recusiveGetGens(Gene* lastGen, quint32 tablen)
 QVector<Gene*> DNAClass::getGenePool()
 {
     return genePool;
-//    QVector<Gene* *> temp;
-//    for(int i = 0; i < genePool.length(); i++)
-//        temp.append(&genePool[i]);
-//    return temp;
 }
 
 QVector<Gene *> DNAClass::getAllGens()
 {
     QVector<Gene*> allGens;
     for(int i = 0; i < genePool.length(); i++)
-        allGens.append(genePool[i]);
+        allGens.append(genePool.at(i));
     for(int i = 0; i < allGens.length(); i++)
     {
         allGens.append(allGens.at(i)->getCaseActions());
     }
     return allGens;
+}
+
+void DNAClass::removeGeneFromPool(Gene *gene)
+{
+    for(int i = 0; i < genePool.length(); i++)
+    {
+        if(gene==genePool.at(i))
+        {
+            genePool.removeAt(i);
+            return;
+        }
+    }
 }

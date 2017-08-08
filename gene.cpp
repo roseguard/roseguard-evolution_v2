@@ -1,4 +1,5 @@
 #include "gene.h"
+#include "dnaclass.h"
 
 Gene::Gene()
 {
@@ -7,14 +8,20 @@ Gene::Gene()
 
 Gene::Gene(LifeCell *organism, ActionPointer thisAction, QString thisActionName, QVector<Gene*> caseActionList)
 {
+    upperGene = 0;
     caseActions = caseActionList;
     baseAction = thisAction;
     actionName = thisActionName;
     life = organism;
+    for(int i = 0; i < caseActions.length(); i++)
+    {
+        caseActions.at(i)->setUpperGene(this);
+    }
 }
 
 Gene::Gene(LifeCell *organism, Gene *copyGene)
 {
+    upperGene = 0;
     life = organism;
     baseAction = copyGene->baseAction;
     actionName = copyGene->actionName;
@@ -22,13 +29,20 @@ Gene::Gene(LifeCell *organism, Gene *copyGene)
     {
         caseActions.append(new Gene(organism, copyGene->getCaseActions().at(i)));
     }
-}
+} 
 
 Gene::~Gene()
 {
-    for(int i = 0; i < caseActions.length(); i++)
+    QVector<Gene*> tempVector = caseActions;
+    for(int i = 0; i < tempVector.length(); i++)    // delete all child gens
+        delete tempVector.at(i);
+    if(upperGene!=0)                                // inform father gen if have, to delete this one from pool
     {
-        delete caseActions[i];
+        upperGene->removeCaseFromPool(this);
+    }
+    else
+    {
+        life->getDNA()->removeGeneFromPool(this);
     }
 }
 
@@ -36,8 +50,10 @@ void Gene::changeCaseAction(qint16 index, Gene* action)
 {
     if(index < caseActions.length())
     {
-        delete caseActions.at(index);
+        action->setUpperGene(this);
+        Gene *temp = caseActions.at(index);
         caseActions.replace(index, action);
+        delete temp;
     }
 }
 
@@ -47,9 +63,15 @@ void Gene::changeBaseAction(ActionPointer action, QString name)
     actionName = name;
 }
 
+void Gene::setUpperGene(Gene *upper)
+{
+    upperGene = upper;
+}
+
 void Gene::appendCase(Gene* action)
 {
     caseActions.append(action);
+    action->setUpperGene(this);
 }
 
 int Gene::runGene()
@@ -80,6 +102,22 @@ QVector<Gene*> Gene::getCaseActions()
 //        temp.append(caseActions[i]);
 //    }
     return caseActions;
+}
+
+void Gene::removeCaseAt(qint16 index)
+{
+    delete caseActions.at(index);
+}
+
+void Gene::removeCaseFromPool(Gene *caseGen)
+{
+    for(int i = 0; i<caseActions.length(); i++)
+    {
+        if(caseActions.at(i)==caseGen)
+        {
+            caseActions.removeAt(i);
+        }
+    }
 }
 
 ActionPointer Gene::getBaseAction()

@@ -16,6 +16,7 @@ public:
     void randomMutation();
     QVector<Gene*> getGenePool();
     QVector<Gene*> getAllGens();
+    void           removeGeneFromPool(Gene *gene);
     QString toString();
     QString recusiveGetGens(Gene *lastGen, quint32 tablen);
     void runDNA();

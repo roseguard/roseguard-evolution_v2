@@ -35,6 +35,11 @@ DNAHotEdit::~DNAHotEdit()
 {
 }
 
+void DNAHotEdit::plainNewDNA()
+{
+    code->setPlainText(life->getDNA()->toString());
+}
+
 void DNAHotEdit::changeDNA()
 {
     if(life)

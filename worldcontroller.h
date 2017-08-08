@@ -15,11 +15,14 @@ public:
     void keyPressEvent(QKeyEvent *event);
 public slots:
     void makeStep();
+    void autoSave();
 private:
     QTimer *stepTimer;
+    QTimer *autoSaveTimer;
     QVector<LifeCell*> lifes;
     quint16 speed = 1;
     bool    isLoop = 0;
+    qint32  foodCount = 0;
 
     QGraphicsTextItem   *speedView;
     QDesktopWidget desk;

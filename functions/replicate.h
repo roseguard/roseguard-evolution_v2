@@ -21,11 +21,14 @@ int replicate(LifeCell *life)
 {
     if(isReadyForReplication(life))
     {
+        qDebug() << life->memory[healthForReplication]/2;
         life->damageHealth(life->memory[healthForReplication]/2);
+        qDebug() << life->memory[healthForReplication]/2;
         LifeCell *child = new LifeCell(life->getWorld(), life, life->memory[healthForReplication]/2);
-        child->setPos(life->x()-qrand()%50+qrand()%100, life->y()-qrand()%50+qrand()%100);
+        child->setPos(life->x()-qrand()%(int)life->rect().width()+(qrand()%(int)(life->rect().width()*2)),
+                      life->y()-qrand()%(int)life->rect().height()+(qrand()%(int)(life->rect().height()*2)));
         child->getDNA()->randomMutation();
-        life->getWorld()->addLife(child);
+        life->getWorld()->addLife(child, true);
         life->setFinish();
         return 1;
     }

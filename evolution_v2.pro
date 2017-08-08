@@ -51,7 +51,8 @@ HEADERS  += viewer.h \
     functions/islife.h \
     functions/bite.h \
     dnahotedit.h \
-    pathchooser.h
+    pathchooser.h \
+    functions/emptyactions.h
 
 RESOURCES += \
     resource.qrc

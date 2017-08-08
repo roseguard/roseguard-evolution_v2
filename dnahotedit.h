@@ -11,6 +11,7 @@ class DNAHotEdit : public QWidget
 public:
     DNAHotEdit(LifeCell *parent);
     ~DNAHotEdit();
+    void plainNewDNA();
 public slots:
     void changeDNA();
     void saveDNA();
