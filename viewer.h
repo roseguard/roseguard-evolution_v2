@@ -3,14 +3,17 @@
 
 #include "includes.h"
 
+
 class Viewer : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    Viewer(MethodLists *list = 0, QWidget *parent = 0);
+    Viewer(QWidget *parent = 0);
     ~Viewer();
-
+signals:
+    void showMenu();
+public:
     WorldController *world;
     QDesktopWidget  desk;
 };

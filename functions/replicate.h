@@ -9,6 +9,7 @@
 
 int isReadyForReplication(LifeCell *life)
 {
+    life->damageStamina(2);
     if(life->memory[healthForReplication]==0)
         life->memory[healthForReplication]= 50 + qrand()%150;
     if(life->memory[healthForReplication] < life->getHealth())
@@ -19,6 +20,7 @@ int isReadyForReplication(LifeCell *life)
 
 int replicate(LifeCell *life)
 {
+    life->damageStamina(8);
     if(isReadyForReplication(life))
     {
         qDebug() << life->memory[healthForReplication]/2;
@@ -37,7 +39,7 @@ int replicate(LifeCell *life)
 
 int rapeDown(LifeCell *life)
 {
-    life->damageStamina(3);
+    life->damageStamina(5);
     if(++life->memory[rapeDelay]<5)
     {
         return 0;
@@ -47,7 +49,7 @@ int rapeDown(LifeCell *life)
         life->memory[rapeDelay]=0;
     }
     WorldController *world = life->getWorld();
-    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()+life->rect().height()+1, QTransform());
+    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()+life->rect().height()+3, QTransform());
     if(item)
     {
         if(item->data(itemType)==lifeItem)
@@ -73,7 +75,7 @@ int rapeDown(LifeCell *life)
 
 int rapeUp(LifeCell *life)
 {
-    life->damageStamina(3);
+    life->damageStamina(5);
     if(++life->memory[rapeDelay]<5)
     {
         return 0;
@@ -83,7 +85,7 @@ int rapeUp(LifeCell *life)
         life->memory[rapeDelay]=0;
     }
     WorldController *world = life->getWorld();
-    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()-1, QTransform());
+    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()-3, QTransform());
     if(item)
     {
         if(item->data(itemType)==lifeItem)
@@ -109,7 +111,7 @@ int rapeUp(LifeCell *life)
 
 int rapeLeft(LifeCell *life)
 {
-    life->damageStamina(3);
+    life->damageStamina(5);
     if(++life->memory[rapeDelay]<5)
     {
         return 0;
@@ -119,7 +121,7 @@ int rapeLeft(LifeCell *life)
         life->memory[rapeDelay]=0;
     }
     WorldController *world = life->getWorld();
-    QGraphicsItem *item = world->itemAt(life->x()-1, life->y()+life->rect().height()/2, QTransform());
+    QGraphicsItem *item = world->itemAt(life->x()-3, life->y()+life->rect().height()/2, QTransform());
     if(item)
     {
         if(item->data(itemType)==lifeItem)
@@ -145,7 +147,7 @@ int rapeLeft(LifeCell *life)
 
 int rapeRight(LifeCell *life)
 {
-    life->damageStamina(3);
+    life->damageStamina(5);
     if(++life->memory[rapeDelay]<5)
     {
         return 0;
@@ -155,7 +157,7 @@ int rapeRight(LifeCell *life)
         life->memory[rapeDelay]=0;
     }
     WorldController *world = life->getWorld();
-    QGraphicsItem *item= world->itemAt(life->x()+(life->rect().width()+1), life->y()+life->rect().height()/2, QTransform());
+    QGraphicsItem *item= world->itemAt(life->x()+(life->rect().width()+3), life->y()+life->rect().height()/2, QTransform());
     if(item)
     {
         if(item->data(itemType)==lifeItem)

@@ -11,7 +11,7 @@ int isLifeDown(LifeCell *life)
     life->damageStamina(3);
     WorldController *world = life->getWorld();
     qreal tempx = life->x()+(life->rect().width()/2);
-    qreal tempy = life->y()+(life->rect().height()+1);
+    qreal tempy = life->y()+(life->rect().height()+3);
     QGraphicsItem *itemDown = world->itemAt(tempx , tempy, QTransform());
     if(itemDown)
     {
@@ -35,7 +35,7 @@ int isLifeUp(LifeCell *life)
     life->damageStamina(3);
     WorldController *world = life->getWorld();
     qreal tempx = life->x()+(life->rect().width()/2);
-    qreal tempy = life->y()-1;
+    qreal tempy = life->y()-3;
     QGraphicsItem *itemDown = world->itemAt(tempx , tempy, QTransform());
     if(itemDown)
     {
@@ -58,7 +58,7 @@ int isLifeLeft(LifeCell *life)
 {
     life->damageStamina(3);
     WorldController *world = life->getWorld();
-    qreal tempx = life->x()-1;
+    qreal tempx = life->x()-3;
     qreal tempy = life->y()+(life->rect().height()/2);
     QGraphicsItem *itemDown = world->itemAt(tempx , tempy, QTransform());
     if(itemDown)
@@ -82,7 +82,7 @@ int isLifeRight(LifeCell *life)
 {
     life->damageStamina(3);
     WorldController *world = life->getWorld();
-    qreal tempx = life->x()+(life->rect().width()+1);
+    qreal tempx = life->x()+(life->rect().width()+3);
     qreal tempy = life->y()+(life->rect().height()/2);
     QGraphicsItem *itemDown = world->itemAt(tempx , tempy, QTransform());
     if(itemDown)

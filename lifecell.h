@@ -3,7 +3,7 @@
 
 #include "includes.h"
 
-class LifeCell : public QGraphicsRectItem
+class LifeCell :public QGraphicsRectItem
 {
 public:
     LifeCell(WorldController *worldPointer);
@@ -16,8 +16,10 @@ public:
     qint32 damageHealth(qint32 value);
     qint32 damageStamina(qint32 value);
     void   updateCode();
+    void   updateText();
     void   feedLife(qint32 value);
     void   restoreStaminaFromHealth();
+    void   restoreSomeStamina(qint32 value);
     WorldController* getWorld();
     DNAClass*        getDNA();
     void             changeDNA(DNAClass *newDNA);
@@ -25,12 +27,13 @@ public:
     void    live();
     int     memory[16];
 
-    bool    isFinished();
+    bool    wasFinished();
     void    setFinish();
 
 //    void mousePressEvent(QMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+
 
 private:
     QDesktopWidget desk;

@@ -163,7 +163,7 @@ void DNAClass::runDNA()
             life->restoreStaminaFromHealth();
         genePool.at(i)->runGene();
     }
-    if(!life->isFinished())
+    if(!life->wasFinished())
         life->setFinish();
 }
 

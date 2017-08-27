@@ -10,11 +10,11 @@ LifeCell::LifeCell(WorldController *worldPointer)
     DNAEditor = Q_NULLPTR;
     setBrush(* new QBrush(Qt::red));
 //    setRect(0,0,lifeWidth, lifeHeight);
-    setRect(0,0,50,50);
+    setRect(0,0,desk.width()*0.02,desk.height()*0.035);
     world = worldPointer;
     setData(itemType, lifeItem);
 
-//    QFile readCode("D:\\test\\dna.ros");
+//    QFile readCode("D:\\test\\dna2.ros");
 //    readCode.open(QIODevice::ReadOnly);
 //    QString codeHandler = readCode.readAll();
 
@@ -32,8 +32,10 @@ LifeCell::LifeCell(WorldController *worldPointer)
     health = 100;
     stamina = 500;
     healthView = new QGraphicsTextItem(QString::number(health), this);
+//    healthView->setScale();
     staminaView = new QGraphicsTextItem(QString::number(stamina), this);
-    staminaView->moveBy(0, 30);
+//    staminaView->setScale(0.7);
+    staminaView->moveBy(0, 15);
 
     DNACode = new QGraphicsTextItem(this);
     DNACode->setDefaultTextColor(QColor(qRgb(0,255,0)));
@@ -42,15 +44,16 @@ LifeCell::LifeCell(WorldController *worldPointer)
     DNACode->hide();
 
     DNAEditor = Q_NULLPTR;
+
 }
 
-LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 healthValue) : QGraphicsRectItem()
+LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 healthValue)
 {
     DNACode = Q_NULLPTR;
     DNAEditor = Q_NULLPTR;
     setBrush(* new QBrush(Qt::red));
 //    setRect(0,0,lifeWidth, lifeHeight);
-    setRect(0,0,50,50);
+    setRect(0,0,desk.width()*0.02,desk.height()*0.035);
     world = worldPointer;
     setData(itemType, lifeItem);
 
@@ -67,8 +70,10 @@ LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 h
     health = healthValue;
     stamina = 500;
     healthView = new QGraphicsTextItem(QString::number(health), this);
+//    healthView->setScale(0.7);
     staminaView = new QGraphicsTextItem(QString::number(stamina), this);
-    staminaView->moveBy(0, 30);
+//    staminaView->setScale(0.7);
+    staminaView->moveBy(0, 15);
 
     DNACode = new QGraphicsTextItem(this);
     DNACode->setDefaultTextColor(QColor(qRgb(0,255,0)));
@@ -79,13 +84,13 @@ LifeCell::LifeCell(WorldController *worldPointer, LifeCell *monoparent, qint32 h
     DNAEditor = Q_NULLPTR;
 }
 
-LifeCell::LifeCell(WorldController *worldPointer, LifeCell *father, LifeCell *mother) : QGraphicsRectItem()
+LifeCell::LifeCell(WorldController *worldPointer, LifeCell *father, LifeCell *mother)
 {
     DNACode = Q_NULLPTR;
     DNAEditor = Q_NULLPTR;
     setBrush(* new QBrush(Qt::red));
 //    setRect(0,0,lifeWidth, lifeHeight);
-    setRect(0,0,50,50);
+    setRect(0,0,desk.width()*0.02,desk.height()*0.035);
     world = worldPointer;
     setData(itemType, lifeItem);
 
@@ -113,8 +118,10 @@ LifeCell::LifeCell(WorldController *worldPointer, LifeCell *father, LifeCell *mo
     health = mother->getHealth()/3;
     stamina = 500;
     healthView = new QGraphicsTextItem(QString::number(health), this);
+//    healthView->setScale(0.7);
     staminaView = new QGraphicsTextItem(QString::number(stamina), this);
-    staminaView->moveBy(0, 30);
+//    staminaView->setScale(0.7);
+    staminaView->moveBy(0, 15);
 
     DNACode = new QGraphicsTextItem(this);
     DNACode->setDefaultTextColor(QColor(qRgb(0,255,0)));
@@ -193,7 +200,6 @@ qint8  LifeCell::getMutationChance()
 qint32 LifeCell::damageHealth(qint32 value)
 {
     health-=value;
-    healthView->setPlainText(QString::number(health));
     if(health<=0)
     {
         dead = true;
@@ -204,7 +210,6 @@ qint32 LifeCell::damageHealth(qint32 value)
 qint32 LifeCell::damageStamina(qint32 value)
 {
     stamina-=value;
-    staminaView->setPlainText(QString::number(stamina));
     return stamina;
 }
 
@@ -222,6 +227,12 @@ void LifeCell::updateCode()
     }
 }
 
+void LifeCell::updateText()
+{
+    healthView->setPlainText(QString::number(health));
+    staminaView->setPlainText(QString::number(stamina));
+}
+
 void LifeCell::feedLife(qint32 value)
 {
     health+=value;
@@ -233,8 +244,15 @@ void LifeCell::restoreStaminaFromHealth()
 //    if(health>=5)
     {
         damageHealth(1);
-        stamina+=500;
+        stamina+=1000;
     }
+}
+
+void LifeCell::restoreSomeStamina(qint32 value)
+{
+    stamina+=value;
+    if(stamina>1000)
+        stamina = 1000;
 }
 
 WorldController* LifeCell::getWorld()
@@ -246,9 +264,10 @@ void LifeCell::live()
 {
     finished = false;
     DNA->runDNA();
+    updateText();
 }
 
-bool LifeCell::isFinished()
+bool LifeCell::wasFinished()
 {
     return finished;
 }

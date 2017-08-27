@@ -9,12 +9,12 @@
 int moveDown(LifeCell *life)
 {
     life->damageStamina(5);
-    QDesktopWidget desk;
-    if(life->rect().height()+life->y() < desk.height())
+    WorldController *desk = life->getWorld();
+    if(life->rect().height()+life->y() < desk->height())
     {
         qreal tempx = life->x()+(life->rect().width()/2);
         qreal tempy = life->y()+(life->rect().height()+1);
-        int itemNum = life->getWorld()->itemAt(tempx , tempy, QTransform())->data(itemType).toInt();
+        int itemNum = desk->itemAt(tempx , tempy, QTransform())->data(itemType).toInt();
         if(itemNum == backgroundItem)
         {
             life->moveBy(0,1);
@@ -85,12 +85,12 @@ int moveLeft(LifeCell *life)
 int moveRight(LifeCell *life)
 {
     life->damageStamina(5);
-    QDesktopWidget desk;
-    if(life->rect().height()+life->y() < desk.width())
+    WorldController *desk = life->getWorld();
+    if(life->rect().height()+life->y() < desk->width())
     {
         qreal tempx = life->x()+(life->rect().width())+1;
         qreal tempy = life->y()+(life->rect().height()/2);
-        int itemNum = life->getWorld()->itemAt(tempx , tempy, QTransform())->data(itemType).toInt();
+        int itemNum = desk->itemAt(tempx , tempy, QTransform())->data(itemType).toInt();
         if(itemNum == backgroundItem)
         {
             life->moveBy(1,0);

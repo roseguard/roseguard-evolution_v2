@@ -33,7 +33,10 @@ SOURCES += main.cpp\
     dnaclass.cpp \
     gene.cpp \
     dnahotedit.cpp \
-    pathchooser.cpp
+    pathchooser.cpp \
+    menuwidget.cpp \
+    mainwidget.cpp \
+    worldcell.cpp
 
 HEADERS  += viewer.h \
     methodlists.h \
@@ -52,7 +55,11 @@ HEADERS  += viewer.h \
     functions/bite.h \
     dnahotedit.h \
     pathchooser.h \
-    functions/emptyactions.h
+    functions/emptyactions.h \
+    menuwidget.h \
+    mainwidget.h \
+    worldcell.h \
+    functions/breathe.h
 
 RESOURCES += \
     resource.qrc

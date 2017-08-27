@@ -10,12 +10,12 @@ int eatDown(LifeCell *life)
 {
     life->damageStamina(3);
     WorldController *world = life->getWorld();
-    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()+life->rect().height()+1, QTransform());
+    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()+life->rect().height()+3, QTransform());
     if(item)
     {
         if(item->data(itemType)==foodItem)
         {
-            life->feedLife(5);
+            life->feedLife(15);
             delete item;
             return 1;
         }
@@ -34,12 +34,12 @@ int eatUp(LifeCell *life)
 {
     life->damageStamina(3);
     WorldController *world = life->getWorld();
-    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()-1, QTransform());
+    QGraphicsItem *item = world->itemAt(life->x()+(life->rect().width()/2), life->y()-3, QTransform());
     if(item)
     {
         if(item->data(itemType)==foodItem)
         {
-            life->feedLife(5);
+            life->feedLife(15);
             delete item;
             return 1;
         }
@@ -58,12 +58,12 @@ int eatLeft(LifeCell *life)
 {
     life->damageStamina(3);
     WorldController *world = life->getWorld();
-    QGraphicsItem *item = world->itemAt(life->x()-1, life->y()+life->rect().height()/2, QTransform());
+    QGraphicsItem *item = world->itemAt(life->x()-3, life->y()+life->rect().height()/2, QTransform());
     if(item)
     {
         if(item->data(itemType)==foodItem)
         {
-            life->feedLife(5);
+            life->feedLife(15);
             delete item;
             return 1;
         }
@@ -82,12 +82,12 @@ int eatRight(LifeCell *life)
 {
     life->damageStamina(3);
     WorldController *world = life->getWorld();
-    QGraphicsItem *item= world->itemAt(life->x()+(life->rect().width()+1), life->y()+life->rect().height()/2, QTransform());
+    QGraphicsItem *item= world->itemAt(life->x()+(life->rect().width()+3), life->y()+life->rect().height()/2, QTransform());
     if(item)
     {
         if(item->data(itemType)==foodItem)
         {
-            life->feedLife(5);
+            life->feedLife(15);
             delete item;
             return 1;
         }

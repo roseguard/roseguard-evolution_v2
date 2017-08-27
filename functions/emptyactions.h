@@ -8,20 +8,20 @@
 
 int emptyBase(LifeCell *life)
 {
-    life->damageStamina(1);
+    life->damageStamina(4);
     return 0;
 }
 
 int emptyWithFinishing(LifeCell *life)
 {
-    life->damageStamina(1);
+    life->damageStamina(4);
     life->setFinish();
     return 0;
 }
 
 int emptyWithReturn(LifeCell *life)
 {
-    life->damageStamina(1);
+    life->damageStamina(4);
     return -1;
 }
 

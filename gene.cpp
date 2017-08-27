@@ -1,5 +1,6 @@
 #include "gene.h"
 #include "dnaclass.h"
+#include <QRunnable>
 
 Gene::Gene()
 {
@@ -76,15 +77,15 @@ void Gene::appendCase(Gene* action)
 
 int Gene::runGene()
 {
-//    QFuture<int> future = QtConcurrent::run(baseAction, life);
-    if(life->isFinished())
-        return 0;
-    int value = baseAction(life);
+//    QFuture<int> future = QtConcurrent::run(new QThreadPool(life), baseAction, life);
+    int value = (int)(LifeCell*)(baseAction)(life);
 //    future.waitForFinished();
 //    int value = future.result();
-    if(life->getStamina()<=0 && !life->isFinished())
+    if(life->wasFinished())
+        return 0;
+    if(life->getStamina()<=0 && !life->wasFinished())
         life->setFinish();
-    if(!life->isFinished())
+    if(!life->wasFinished())
     {
         if(value < caseActions.length() && value >= 0)
         {

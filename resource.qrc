@@ -1,5 +1,15 @@
 <RCC>
     <qresource prefix="/img">
         <file>back.png</file>
+        <file>textures/arctic.png</file>
+        <file>textures/equtorial.png</file>
+        <file>textures/land.png</file>
+        <file>textures/mountain.png</file>
+        <file>textures/normal.png</file>
+        <file>textures/sand.png</file>
+        <file>textures/tropical.png</file>
+        <file>textures/tundra.png</file>
+        <file>textures/water.png</file>
+        <file>textures/food.png</file>
     </qresource>
 </RCC>

@@ -4,6 +4,7 @@
 #include "lifecell.h"
 #include "gene.h"
 #include "dnaclass.h"
+#include "mainwidget.h"
 
 #include <QFile>
 #include <QDir>
@@ -12,7 +13,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     qsrand(QTime::currentTime().msec());
-    Viewer w;
+    MethodLists::init();
+    MethodLists::initBaseMethods();
+    MainWidget widg;
+//    Viewer w;
 
 //    {
 //        MethodLists::baseInit();

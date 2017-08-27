@@ -9,6 +9,7 @@
 #include "functions/islife.h"
 #include "functions/bite.h"
 #include "functions/emptyactions.h"
+#include "functions/breathe.h"
 
 void writeFunctions()
 {
@@ -52,6 +53,9 @@ void writeFunctions()
     MethodLists::append(&emptyBase,             "emptyBase");
     MethodLists::append(&emptyWithFinishing,    "emptyWithFinishing");
     MethodLists::append(&emptyWithReturn,       "emptyWithReturn");
+
+    MethodLists::append(&catBreathe,    "canBreathe");
+    MethodLists::append(&breathe,       "breathe");
 }
 
 #endif // FUNCTIONSFILE_H

@@ -19,6 +19,7 @@
 
 #include <QFile>
 #include <QThread>
+#include <QThreadPool>
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -34,6 +35,9 @@
 
 #include <QKeyEvent>
 #include <QGraphicsSceneMouseEvent>
+#include <QShortcut>
+#include <QShortcutEvent>
+#include "QtConcurrent/QtConcurrent"
 
 class LifeCell;
 class MethodLists;
@@ -42,6 +46,10 @@ class WorldController;
 class DNAClass;
 class DNAHotEdit;
 class PathChooser;
+class MenuWidget;
+class MainWidget;
+class Viewer;
+class WorldCell;
 
 typedef int (*ActionPointer)(LifeCell*);
 
